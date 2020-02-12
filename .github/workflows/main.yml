@@ -15,4 +15,4 @@ jobs:
       with: 
           version: 1.10.x
 
-    - run: spcomp deathmatch_loader.sp -o output/deathmatch_loader.smx
+    - run: spcomp -i scripting/include scripting/deathmatch_loader.sp -o plugins/deathmatch_loader.smx
