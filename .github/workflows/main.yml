@@ -16,3 +16,9 @@ jobs:
           version: 1.10.x
 
     - run: spcomp -i scripting/includes scripting/deathmatch_loader.sp -o plugins/deathmatch_loader.smx
+
+    - name: Upload compiled plugin
+      uses: actions/upload-artifact@v1
+      with:
+        name: Compiled plugin
+        path: plugins/deathmatch_loader.smx
