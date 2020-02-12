@@ -17,6 +17,9 @@ jobs:
       with: 
           version: 1.10.x
 
+    - name: Create plugins directory
+      run: mkdir plugins
+      
     - run: spcomp -i ./scripting/includes ./scripting/deathmatch_loader.sp -o ./plugins/deathmatch_loader.smx
 
     - name: Prepare files for artifact
