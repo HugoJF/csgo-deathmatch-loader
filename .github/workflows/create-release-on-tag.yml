@@ -19,7 +19,7 @@ jobs:
 
     - name: Create plugins directory
       run: mkdir plugins
-      
+
     - run: spcomp -i ./scripting/includes ./scripting/deathmatch_loader.sp -o ./plugins/deathmatch_loader.smx
 
     - name: Prepare files for artifact
@@ -31,7 +31,8 @@ jobs:
 
     - name: Zip plugin
       run : |
-        zip -r deathmatch_loader ./artifact/*
+        cd artifact
+        zip -r deathmatch_loader ./*
 
     - name: Create Release
       id: create_release
