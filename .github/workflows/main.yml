@@ -1,10 +1,9 @@
-name: CI
+name: Compile Plugin
 
 on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -17,8 +16,15 @@ jobs:
 
     - run: spcomp -i scripting/includes scripting/deathmatch_loader.sp -o plugins/deathmatch_loader.smx
 
+    - name: Prepare files for artifact
+      run: |
+        mkdir artifact
+        mv plugins artifact
+        mv scripting artifact
+        mv LICENSE artifact
+
     - name: Upload compiled plugin
       uses: actions/upload-artifact@v1
       with:
         name: Compiled plugin
-        path: .
+        path: artifact
