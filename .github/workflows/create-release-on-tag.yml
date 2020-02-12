@@ -28,7 +28,7 @@ jobs:
 
     - name: Zip plugin
       run : |
-        zip --junk-paths deathmatch_loader ./artifact
+        zip -r deathmatch_loader ./artifact/*
 
     - name: Create Release
       id: create_release
