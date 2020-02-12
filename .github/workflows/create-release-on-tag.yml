@@ -32,7 +32,9 @@ jobs:
     - name: Zip plugin
       run : |
         cd artifact
-        zip -r deathmatch_loader ./*
+        zip -r deathmatch_loader *
+        cd ..
+        mv artifact/deathmatch_loader.zip .
 
     - name: Create Release
       id: create_release
