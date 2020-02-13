@@ -86,5 +86,5 @@ jobs:
       with:
         upload_url: ${{ steps.release_url.outputs.upload_url }}
         asset_path: ./deathmatch-loader.zip
-        asset_name: deathmatch-loader-sm${{ matrix.sm-version }}.zip
+        asset_name: deathmatch-loader-sm${{ steps.setup.outputs.version }}.zip
         asset_content_type: application/zip
