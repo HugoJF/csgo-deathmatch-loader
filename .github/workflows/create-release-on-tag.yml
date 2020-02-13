@@ -27,7 +27,7 @@ jobs:
     - name: Create plugins directory
       run: mkdir -p plugins
 
-    - run: spcomp -i ./scripting/includes ./scripting/deathmatch_loader.sp -o ./plugins/deathmatch_loader.smx
+    - run: spcomp -i ./scripting/includes ./scripting/deathmatch_loader.sp -o ./plugins/deathmatch-loader.smx
 
     - name: Prepare files for artifact
       run: |
@@ -41,7 +41,7 @@ jobs:
         cd artifact
         zip -r deathmatch_loader *
         cd ..
-        mv artifact/deathmatch-loader-sm${{ steps.setup.outputs.version }}.zip .
+        mv artifact/deathmatch-loader.zip .
 
     - name: Create Release
       id: create_release
@@ -61,6 +61,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./deathmatch-loader-sm${{ matrix.sm-version }}.zip.zip
-        asset_name: deathmatch-loader-sm${{ matrix.sm-version }}.zip.zip
+        asset_path: ./deathmatch-loader.zip
+        asset_name: deathmatch-loader-sm${{ matrix.sm-version }}.zip
         asset_content_type: application/zip
