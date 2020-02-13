@@ -39,7 +39,7 @@ jobs:
     - name: Zip plugin
       run : |
         cd artifact
-        zip -r deathmatch_loader *
+        zip -r deathmatch-loader *
         cd ..
         mv artifact/deathmatch-loader.zip .
 
