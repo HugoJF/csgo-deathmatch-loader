@@ -16,14 +16,16 @@ jobs:
     - uses: actions/checkout@v2
       
     - name: Setup SourcePawn Compiler
+      id: setup
       uses: rumblefrog/setup-sp@v1.0.0
       with: 
-          version: 1.10.x
+          version: ${{ matrix.sm-version }}
 
     - name: Create plugins directory
       run: mkdir plugins
       
-    - run: spcomp -i scripting/includes scripting/deathmatch_loader.sp -o plugins/deathmatch_loader.smx
+    - name: Compile
+      run: spcomp -i scripting/includes scripting/deathmatch_loader.sp -o plugins/deathmatch-loader.smx
 
     - name: Prepare files for artifact
       run: |
@@ -31,8 +33,9 @@ jobs:
         mv plugins artifact
         mv scripting artifact
         mv LICENSE artifact
+
     - name: Upload compiled plugin
       uses: actions/upload-artifact@v1
       with:
-        name: Compiled plugin
+        name: Compiled plugin with SM ${{ steps.setup.outputs.version }}
         path: artifact
