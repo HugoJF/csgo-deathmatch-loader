@@ -9,24 +9,30 @@ jobs:
   compile:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        sm-version: [ '1.10.x', '1.11.x' ]
+
+    name: SM version ${{ matrix.sm-version }}
+
     steps:
     - uses: actions/checkout@v2
-      
+
     - name: Setup SourcePawn Compiler
       uses: rumblefrog/setup-sp@v1.0.0
       with: 
-          version: 1.10.x
+          version: ${{ matrix.sm-version }}
 
     - name: Create plugins directory
-      run: mkdir plugins
+      run: mkdir -p plugins
 
     - run: spcomp -i ./scripting/includes ./scripting/deathmatch_loader.sp -o ./plugins/deathmatch_loader.smx
 
     - name: Prepare files for artifact
       run: |
         mkdir artifact
-        mv ./plugins/ ./artifact/
-        mv ./scripting/ ./artifact/
+        mv ./plugins ./artifact/
+        mv ./scripting ./artifact/
         mv ./LICENSE ./artifact/
 
     - name: Zip plugin
@@ -34,7 +40,7 @@ jobs:
         cd artifact
         zip -r deathmatch_loader *
         cd ..
-        mv artifact/deathmatch_loader.zip .
+        mv artifact/deathmatch-loader-sm${{ matrix.sm-version }}.zip .
 
     - name: Create Release
       id: create_release
@@ -43,7 +49,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        release_name: Release ${{ github.ref }} compiled with SM ${{ matrix.sm-version }}
         draft: false
         prerelease: false
 
@@ -54,6 +60,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./deathmatch_loader.zip
-        asset_name: deathmatch_loader.zip
+        asset_path: ./deathmatch-loader-sm${{ matrix.sm-version }}.zip.zip
+        asset_name: deathmatch-loader-sm${{ matrix.sm-version }}.zip.zip
         asset_content_type: application/zip
