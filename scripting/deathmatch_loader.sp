@@ -57,8 +57,9 @@ int g_iLastMessage;
 public void OnPluginStart()
 {
     /* Let's not waste our time here... */
-    if (GetEngineVersion() != Engine_CSGO)
+    if (GetEngineVersion() != Engine_CSGO) {
         SetFailState("ERROR: This plugin is designed only for CS:GO.")
+    }
 
     CreateConVar("dm_m5_loader_version", PLUGIN_VERSION, PLUGIN_NAME, FCVAR_SPONLY | FCVAR_REPLICATED | FCVAR_NOTIFY | FCVAR_DONTRECORD);
     g_hEnabled = CreateConVar("dm_loader_enabled", "1", "Enable/disable executing configs");
@@ -105,7 +106,9 @@ int GetSkipVotes()
     int iCount = 0;
 
     for (int i = 0; i <= MAXPLAYERS; i++) {
-        if (g_bWantsToSkip[i]) iCount++;
+        if (g_bWantsToSkip[i]) {
+            iCount++;
+        }
     }
 
     return iCount;
@@ -190,7 +193,7 @@ public Action Command_Extend(int client, int args)
 
     g_bWantsToExtend[client] = !g_bWantsToExtend[client];
 
-    if(g_bWantsToExtend[client]) {
+    if (g_bWantsToExtend[client]) {
         CPrintToChat(client, "[{green}MULTIMOD{default}] Você votou para {green}ESTENDER %d minutos {default}o modo atual!", EXTEND_DURATION);
     } else {
         CPrintToChat(client, "[{green}MULTIMOD{default}] Você {darkred}REMOVEU {default}o seu voto de estender o modo atual!");
@@ -199,11 +202,10 @@ public Action Command_Extend(int client, int args)
     int iSkips = GetExtendVotes();
     int iNeeded = GetExtendVotesNeeded();
 
-    if(iSkips < iNeeded) {
+    if (iSkips < iNeeded) {
         CPrintToChatAll("[{green}MULTIMOD{default}] {green}%d/%d {default}votos para estender por %d minutos o modo atual!", iSkips, iNeeded, EXTEND_DURATION);
     } else {
         CPrintToChatAll("[{green}MULTIMOD{default}] Modo atual estendido por %d minutos...", EXTEND_DURATION);
-        ResetExtendVotes();
         ExtendMode(EXTEND_DURATION);
     }
 
@@ -215,7 +217,7 @@ public Action Command_Skip(int client, int args)
 {
     g_bWantsToSkip[client] = !g_bWantsToSkip[client];
 
-    if(g_bWantsToSkip[client]) {
+    if (g_bWantsToSkip[client]) {
         CPrintToChat(client, "[{green}MULTIMOD{default}] Você votou para {green}PULAR {default}o modo atual!");
     } else {
         CPrintToChat(client, "[{green}MULTIMOD{default}] Você {darkred}REMOVEU {default}o seu voto de pular o modo atual!");
@@ -224,11 +226,10 @@ public Action Command_Skip(int client, int args)
     int iSkips = GetSkipVotes();
     int iNeeded = GetSkipVotesNeeded();
 
-    if(iSkips < iNeeded) {
+    if (iSkips < iNeeded) {
         CPrintToChatAll("[{green}MULTIMOD{default}] {green}%d/%d {default}votos para pular para o próximo modo!", iSkips, iNeeded);
     } else {
         CPrintToChatAll("[{green}MULTIMOD{default}] Pulando para o próximo modo de jogo em %d segundos...", RoundFloat(NEXTMODE_DELAY));
-        ResetSkipVotes();
         QueueNextMode();
     }
 
@@ -246,10 +247,12 @@ public Action Command_Timer(int client, int args)
 
 public Action Command_ReloadDML(int client, int args)
 {
-    if (ParseConfig())
+    if (ParseConfig()) {
         ReplyToCommand(client, "[DML] - Configuration file has been reloaded.");
-    else
+    } else {
         ReplyToCommand(client, "[DML] - Configuration file has failed to reload.");
+    }
+
     return Plugin_Handled;
 }
 
@@ -262,6 +265,7 @@ public Action Command_NextMode(int client, int args)
 
 void ExtendMode(int minutes)
 {
+    ResetExtendVotes();
     g_bCurrentModeExtended = true;
     g_iLastModeLoad += minutes * 60;
 }
@@ -281,8 +285,9 @@ public Action Timer_NextMode(Handle timer)
 public Action Timer_ChatMessages(Handle timer)
 {
     char buffer[512];
-    if (++g_iLastMessage >= MAX_MESSAGES)
+    if (++g_iLastMessage >= MAX_MESSAGES) {
         g_iLastMessage = 0;
+    }
 
     Format(buffer, 512, "[{green}MULTIMOD{default}] %s", g_sChatMessages[g_iLastMessage]);
 
@@ -308,7 +313,7 @@ public Action Timer_UpdateMode(Handle timer)
         CPrintToChatAll("[{green}MULTIMOD{default}] %d minutes restantes...", remaining);
     }
 
-    if (remaining <= 0){
+    if (remaining <= 0) {
         //PrintToChatAll("Loading next game mode...");
         NextMode();
     }
@@ -320,7 +325,7 @@ public SMCResult ReadConfig_EndSection(Handle smc) {}
 
 public SMCResult ReadConfig_KeyValue(Handle smc, const char[] key, const char[] value, bool key_quotes, bool value_quotes)
 {
-    if (!key[0]){
+    if (!key[0]) {
         return SMCParse_Continue;
     }
 
@@ -348,6 +353,7 @@ void NextMode()
 {
     g_bCurrentModeExtended = false;
     ExecMode(g_iCurrentMode + 1);
+    ResetSkipVotes();
 }
 
 void ExecMode(int modeIndex)
@@ -382,10 +388,11 @@ bool ParseConfig()
         if (err != SMCError_Okay)
         {
             char sError[64];
-            if (g_hConfigParser.GetErrorString(err, sError, sizeof(sError)))
+            if (g_hConfigParser.GetErrorString(err, sError, sizeof(sError))) {
                 LogError("[DML] ERROR: %s", sError);
-            else
+            } else {
                 LogError("[DML] ERROR: Fatal parse error");
+            }
             return false;
         }
     }
