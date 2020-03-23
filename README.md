@@ -2,8 +2,8 @@
 
 [![Latest compiled version](https://img.shields.io/github/v/release/HugoJF/csgo-deathmatch-loader?style=flat-square)](https://packagist.org/packages/hugojf/csgo-deathmatch-loader)
 [![Version](https://img.shields.io/github/license/hugojf/csgo-deathmatch-loader?style=flat-square)](https://packagist.org/packages/hugojf/csgo-deathmatch-loader)
-[![Edge build](https://img.shields.io/github/workflow/status/hugojf/csgo-deathmatch-loader/Compile%20Plugin?style=flat-square)](https://packagist.org/packages/hugojf/csgo-deathmatch-loader)
-[![Release build](https://img.shields.io/github/workflow/status/hugojf/csgo-deathmatch-loader/Publish%20release?style=flat-square)](https://packagist.org/packages/hugojf/csgo-deathmatch-loader)
+[![Edge build](https://img.shields.io/github/workflow/status/hugojf/csgo-deathmatch-loader/Compile%20Plugin?style=flat-square&label=edge)](https://packagist.org/packages/hugojf/csgo-deathmatch-loader)
+[![Release build](https://img.shields.io/github/workflow/status/hugojf/csgo-deathmatch-loader/Publish%20release?style=flat-square&label=release)](https://packagist.org/packages/hugojf/csgo-deathmatch-loader)
 
 This plugin is intended to be used with [Maxximou5/csgo-deathmatch](https://github.com/Maxximou5/csgo-deathmatch) version 3 which provides config loading commands.
 
